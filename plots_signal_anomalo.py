@@ -14,7 +14,7 @@ import sys
 import uproot_methods
 #from ROOT import *
 
-# arquivos de signal separados pelo (_) --> alpha0 _ alpha
+# arquivos de signal separados pelo (_) --> alpha0 _ alphaC
 
 PATH = '/home/matheus/Documentos/4quadri_vertive/sample_signal_2016/' # caminho onde se encontra as nTuplas
 PATH_PLOT = '/home/matheus/Documentos/4quadri_vertive/plots_signal' # caminho para salvar os plots
@@ -177,7 +177,7 @@ tree_ANOMALO6 = open_files( PATH + ANOMALO6 )
 tree_ANOMALO7 = open_files( PATH + ANOMALO7 )
 tree_ANOMALO8 = open_files( PATH + ANOMALO8 )
 
-def get_branche( tree , array ):
+def get_branche( tree , array ): # funcao que retorna a branche que desejada 
     branche = pd.DataFrame( tree.array( array ) )[0] 
     return branche
 
@@ -185,7 +185,7 @@ def get_branche( tree , array ):
 # colocar get_branche dentro do almir
 
 
-def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invariante do WW, pt do par de le
+def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invariante do WW, pt do par de lepton e o DeltaPhi entre jatos_MET e W-leptonico_W-hadronico
     Mw = 80.379 # massa do boson W
     k = ( ( Mw**2 ) / 2 + get_branche(tree,'muon_px')*get_branche(tree,'METPx')) + (get_branche(tree,'muon_py')*get_branche(tree,'METPy') ) 
     raiz = ( ( ( (k * get_branche(tree,'muon_pz'))**2) / (get_branche(tree,'muon_pt')**4)  - ( (get_branche(tree,'muon_E')*get_branche(tree,'METPt'))**2 - k)/get_branche(tree,'muon_pt')**2)**0.5 ).fillna(0) # O .fillna(0) substitui os NaN's  por 0 no DataFrame que apresentam raiz imaginaria
