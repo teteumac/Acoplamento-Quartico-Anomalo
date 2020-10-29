@@ -134,30 +134,30 @@ Luminosity        = SingleMuon_Run2016B + SingleMuon_Run2016C + SingleMuon_Run20
 
 # BACKGROUND events - Normalization #
 
-norm_TT = ( cross_section_TT + Luminosity ) / events_number_TT
-norm_inclusive_WZ = ( cross_section_inclusive_WZ + Luminosity ) / events_number_inclusive_WZ
-norm_inclusive_ZZ = ( cross_section_inclusive_ZZ + Luminosity ) / events_number_inclusive_ZZ
-norm_inclusive_WW = ( cross_section_inclusive_WW + Luminosity ) / events_number_inclusive_WW
-norm_ST_s_channel = ( cross_section_ST_s_channel + Luminosity ) / events_number_ST_s_channel
-norm_ST_t_channel_top = ( cross_section_ST_t_channel_top + Luminosity ) / events_number_ST_t_channel_top
-norm_ST_t_channel_antitop = ( cross_section_ST_t_channel_antitop + Luminosity) / events_number_ST_t_channel_antitop
-norm_ST_tW_antitop = ( cross_section_ST_tW_antitop + Luminosity ) / events_number_ST_tW_antitop
-norm_ST_tW_top = ( cross_section_ST_tW_top + Luminosity) / events_number_ST_tW_top
-norm_QCD = ( cross_section_QCD_Pt_170to300  + cross_section_QCD_Pt_300to470  + cross_section_QCD_Pt_470to600  + cross_section_QCD_Pt_600to800  + cross_section_QCD_Pt_800to1000 + Luminosity) / ( events_number_QCD_Pt_170to300 + events_number_QCD_Pt_300to470 + events_number_QCD_Pt_470to600 + events_number_QCD_Pt_600to800 + events_number_QCD_Pt_800to1000 )
-norm_DYJetsToLL = ( cross_section_DYJetsToLL_Pt_100To250 + cross_section_DYJetsToLL_Pt_250To400 + cross_section_DYJetsToLL_Pt_400To650 + cross_section_DYJetsToLL_Pt_650ToInf + Luminosity ) / ( events_number_DYJetsToLL_Pt_100To250 + events_number_DYJetsToLL_Pt_250To400 + events_number_DYJetsToLL_Pt_400To650 + events_number_DYJetsToLL_Pt_650ToInf )
+norm_TT = ( cross_section_TT * Luminosity ) / events_number_TT
+norm_inclusive_WZ = ( cross_section_inclusive_WZ * Luminosity ) / events_number_inclusive_WZ
+norm_inclusive_ZZ = ( cross_section_inclusive_ZZ * Luminosity ) / events_number_inclusive_ZZ
+norm_inclusive_WW = ( cross_section_inclusive_WW * Luminosity ) / events_number_inclusive_WW
+norm_ST_s_channel = ( cross_section_ST_s_channel * Luminosity ) / events_number_ST_s_channel
+norm_ST_t_channel_top = ( cross_section_ST_t_channel_top * Luminosity ) / events_number_ST_t_channel_top
+norm_ST_t_channel_antitop = ( cross_section_ST_t_channel_antitop * Luminosity) / events_number_ST_t_channel_antitop
+norm_ST_tW_antitop = ( cross_section_ST_tW_antitop * Luminosity ) / events_number_ST_tW_antitop
+norm_ST_tW_top = ( cross_section_ST_tW_top * Luminosity) / events_number_ST_tW_top
+norm_QCD = ( cross_section_QCD_Pt_170to300  * cross_section_QCD_Pt_300to470  * cross_section_QCD_Pt_470to600  * cross_section_QCD_Pt_600to800  * cross_section_QCD_Pt_800to1000 * Luminosity) / ( events_number_QCD_Pt_170to300 + events_number_QCD_Pt_300to470 + events_number_QCD_Pt_470to600 + events_number_QCD_Pt_600to800 + events_number_QCD_Pt_800to1000 )
+norm_DYJetsToLL = ( cross_section_DYJetsToLL_Pt_100To250 * cross_section_DYJetsToLL_Pt_250To400 * cross_section_DYJetsToLL_Pt_400To650 * cross_section_DYJetsToLL_Pt_650ToInf * Luminosity ) / ( events_number_DYJetsToLL_Pt_100To250 + events_number_DYJetsToLL_Pt_250To400 + events_number_DYJetsToLL_Pt_400To650 + events_number_DYJetsToLL_Pt_650ToInf )
 
 
 # SIGNAL events - Normalization #
 
-norm_SM = ( cross_section_SM + Luminosity ) / ( events_number_SM )
-norm_ANOMALO1 = ( cross_section_ANOMALO1 + Luminosity ) / ( events_number_ANOMALO1 )
-norm_ANOMALO2 = ( cross_section_ANOMALO2 + Luminosity ) / ( events_number_ANOMALO2 )
-norm_ANOMALO3 = ( cross_section_ANOMALO3 + Luminosity ) / ( events_number_ANOMALO3 )
-norm_ANOMALO4 = ( cross_section_ANOMALO4 + Luminosity ) / ( events_number_ANOMALO4 )
-norm_ANOMALO5 = ( cross_section_ANOMALO5 + Luminosity ) / ( events_number_ANOMALO5 )
-norm_ANOMALO6 = ( cross_section_ANOMALO6 + Luminosity ) / ( events_number_ANOMALO6 )
-norm_ANOMALO7 = ( cross_section_ANOMALO7 + Luminosity ) / ( events_number_ANOMALO7 )
-norm_ANOMALO8 = ( cross_section_ANOMALO8 + Luminosity ) / ( events_number_ANOMALO8 )
+norm_SM = ( cross_section_SM * Luminosity ) /  events_number_SM 
+norm_ANOMALO1 = ( cross_section_ANOMALO1 * Luminosity ) /  events_number_ANOMALO1 
+norm_ANOMALO2 = ( cross_section_ANOMALO2 * Luminosity ) /  events_number_ANOMALO2 
+norm_ANOMALO3 = ( cross_section_ANOMALO3 * Luminosity ) /  events_number_ANOMALO3 
+norm_ANOMALO4 = ( cross_section_ANOMALO4 * Luminosity ) /  events_number_ANOMALO4 
+norm_ANOMALO5 = ( cross_section_ANOMALO5 * Luminosity ) /  events_number_ANOMALO5 
+norm_ANOMALO6 = ( cross_section_ANOMALO6 * Luminosity ) /  events_number_ANOMALO6 
+norm_ANOMALO7 = ( cross_section_ANOMALO7 * Luminosity ) /  events_number_ANOMALO7 
+norm_ANOMALO8 = ( cross_section_ANOMALO8 * Luminosity ) /  events_number_ANOMALO8 
 
 def open_files( file ): # Read and open the nTuple's TTree
     #print( file )
