@@ -114,9 +114,11 @@ def get_branch( tree , array ): # Return the disered branch
 def almir( tree ): # Return a DataFrame that contains the information about WW invariant mass, lepton pair p_T and DeltaPli between jet_MET and leptonic-W_hadronic-W
     Mw = 80.379 # Boson W mass
     k = ( ( Mw**2 ) / 2 + get_branch(tree,'muon_px')*get_branch(tree,'METPx')) + (get_branch(tree,'muon_py')*get_branch(tree,'METPy') ) 
-    raiz = ( ( ( (k * get_branch(tree,'muon_pz'))**2) / (get_branch(tree,'muon_pt')**4)  - ( (get_branch(tree,'muon_E')*get_branch(tree,'METPt'))**2 - k)/get_branch(tree,'muon_pt')**2)**0.5 ).fillna(0) # .fillna(0) - replaces DataFrame NaN's that presents imaginary roots by 0 
+    raiz_ = ( ( ( (k * get_branch(tree,'muon_pz'))**2) / (get_branch(tree,'muon_pt')**4)  - ( (get_branch(tree,'muon_E')*get_branch(tree,'METPt'))**2 - k)/get_branch(tree,'muon_pt')**2)**0.5 ) 
+    raiz = np.nan_to_num(raiz_) # NaN values, caused by dividing by 0 or the result of an imaginary root, are replaced by NaN
     Pz_nu = ( ( k*get_branch(tree,'muon_pz') / (get_branch(tree,'muon_pt')**2 ) ) + raiz ) # Reconstructed neutrino's momentum z-component 
     W_lep_energy = get_branch(tree,'muon_E') + (get_branch(tree,'METPx')**2 + get_branch(tree,'METPy')**2 + Pz_nu**2)**0.5 # Lepton pair energy   
+    # Using TLorentzVector for Python
     TLV_lep = uproot_methods.TLorentzVectorArray(get_branch(tree,'muon_px')+get_branch(tree,'METPx'),get_branch(tree,'muon_py')+get_branch(tree,'METPy'),get_branch(tree,'muon_pz')+ Pz_nu,W_lep_energy) # Lepton pair 4-vector
     TLV_jet = uproot_methods.TLorentzVectorArray(get_branch(tree,'jetAK8_px'),get_branch(tree,'jetAK8_py'),get_branch(tree,'jetAK8_pz'),get_branch(tree,'jetAK8_E'))
     
