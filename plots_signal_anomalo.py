@@ -6,6 +6,7 @@ from almir import *
 
 PATH      = '/mnt/hadoop/cms/store/user/mthiel/samples/samples_2016/merged_06_10_20/' # input nTuples path 
 PATH_PLOT = '/home/malvesga/WW/Acoplamento-Quartico-Anomalo/Miguel/plots_signal/' # output plots path
+
 SM        = 'pre_MiniAOD_FPMC_WW_13TeV_0.0_0.0.root'
 ANOMALO1  = 'pre_MiniAOD_FPMC_WW_13TeV_0.0_2e-5.root'
 ANOMALO2  = 'pre_MiniAOD_FPMC_WW_13TeV_0.0_2e-6.root'
