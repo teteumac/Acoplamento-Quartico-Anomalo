@@ -14,26 +14,26 @@ import sys
 import uproot_methods
 import h5py
 
-def open_files( file ): # Funcao que ler e abre as trees das nTuplas
+def open_files( file ): # Read and open the nTuple's TTree
     #print( file )
-    root_ = uproot.open( file ) # abertura dos arquivos 
-    tree_ = root_[ "demo/Events" ] # trees das nTupla
-    #print(tree_.show()) # printar na tela todos os branches da nTupla
+    root_ = uproot.open( file ) # Open the file 
+    tree_ = root_[ "demo/Events" ] # Path to nTuple's TTree
+    #print(tree_.show()) # Print all nTuple's branches on the screen
     return tree_
 
 def get_branche( tree , array ): # Return the disered branch 
     branch = np.array( pd.DataFrame( tree.array( array ) )[0] )
     return branch
 
-def get_PfFrom( tree , array ):
+def get_PfFrom( tree , array ): Return the disered branch 
     branche = tree.array( array ) 
     return branche
 
 
-def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invariante do WW, pt do par de le
+def almir( tree ): #  # Return a DataFrame that contains the information about WW invariant mass, lepton pair p_T and DeltaPli between jet_MET and leptonic-W_hadronic-W
     
 
-    Mw = 80.379 # massa do boson W
+    Mw = 80.379 # Boson W mass
     
     jetAK8_pt = get_branche( tree , 'jetAK8_pt')
     jetAK8_prunedMass = get_branche( tree , 'jetAK8_prunedMass')
@@ -43,15 +43,11 @@ def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invarian
     jetAK8_py =  get_branche(tree,'jetAK8_py')
     jetAK8_pz =  get_branche(tree,'jetAK8_pz')
     jetAK8_E =  get_branche(tree,'jetAK8_E')
-
-    #print(jetAK8_pt) 
     
     METPt  = get_branche(tree, 'METPt' )
     METPx  = get_branche(tree, 'METPx' )
     METPy  = get_branche(tree, 'METPy' )
     METphi = get_branche(tree, 'METphi')
-
-    #print(METphi)
 
     muon_pt  = get_branche(tree, 'muon_pt')
     muon_eta = get_branche(tree, 'muon_eta')
@@ -64,17 +60,17 @@ def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invarian
     
     k = ( ( Mw**2 ) / 2 + muon_px * METPx ) +  (muon_py * METPy ) 
     raiz_ = ( ( ( (k * muon_pz)**2) / (muon_pt**4)  - ( (muon_E * METPt)**2 - k) / muon_pt**2)**0.5 )    
-    raiz = np.nan_to_num(raiz_) # Os valores de NaN, causados pela divisão por 0 ou pelo resultado de uma raiz imaginária, é substituida por NaN
-    Pz_nu = ( ( k * muon_pz / (muon_pt**2 ) ) + raiz ) # coordenada z do momentum do neutrino reconstruido
-    W_lep_energy = ( muon_E + (METPx**2 + METPy**2 + Pz_nu**2)**0.5) # Energia do par de léptons  
+    raiz = np.nan_to_num(raiz_) # NaN values, caused by dividing by 0 or the result of an imaginary root, are replaced by NaN
+    Pz_nu = ( ( k * muon_pz / (muon_pt**2 ) ) + raiz ) #  Reconstructed neutrino's momentum z-component 
+    W_lep_energy = ( muon_E + (METPx**2 + METPy**2 + Pz_nu**2)**0.5) #  Lepton pair energy 
 
 
-    # Usamos o TLorenctzVector do Python 
+    # Using TLorenctzVector on Python 
     TLV_lep = uproot_methods.TLorentzVectorArray(
               muon_px + METPx,
               muon_py + METPy,
               muon_pz + Pz_nu, 
-              W_lep_energy) # 4-vector do par de lepton
+              W_lep_energy) # 4-vector of the lepton pair 
             
     TLV_jet = uproot_methods.TLorentzVectorArray(
               jetAK8_px,
@@ -82,25 +78,23 @@ def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invarian
               jetAK8_pz,
               jetAK8_E )    
     
-    W_mass = ( TLV_lep + TLV_jet ).mass # Massa invariante do WW
-    W_lep_pt = ( TLV_lep ).pt # Pt do par de lepton
+    W_mass = ( TLV_lep + TLV_jet ).mass # WW invariant mass
+    W_lep_pt = ( TLV_lep ).pt # Lepton pair p_T
     
     dphi_jet_lep = TLV_lep.phi - TLV_jet.phi
     dphi_jet_lep = np.where( dphi_jet_lep >=  scipy.constants.pi, dphi_jet_lep - 2*scipy.constants.pi, dphi_jet_lep)
-    dphi_jet_lep = np.where( dphi_jet_lep <  - scipy.constants.pi, dphi_jet_lep + 2*scipy.constants.pi, dphi_jet_lep) # delta phi entre o jato e o par de lepton
+    dphi_jet_lep = np.where( dphi_jet_lep <  - scipy.constants.pi, dphi_jet_lep + 2*scipy.constants.pi, dphi_jet_lep) # delta phi between the jet and the lepton pair
     dphi_jet_MET = METphi - TLV_jet.phi
     dphi_jet_MET = np.where( dphi_jet_MET >=  scipy.constants.pi, dphi_jet_MET - 2*scipy.constants.pi, dphi_jet_MET)
-    dphi_jet_MET = np.where( dphi_jet_MET <  - scipy.constants.pi, dphi_jet_MET + 2*scipy.constants.pi, dphi_jet_MET) # delta phi entre o jato e o MET 
-    
-
+    dphi_jet_MET = np.where( dphi_jet_MET <  - scipy.constants.pi, dphi_jet_MET + 2*scipy.constants.pi, dphi_jet_MET) # delta phi between the jet e the MET 
 
     '''
-    ** numeração das colunas do numpy array ** ( para facilitar na hora de fazer os cortes )
+    ** numbering the columns of the numpy array ** (to make cutting easier)
 
-    0  --> massa do WW
-    1  --> Pt do W leptônico
-    2  --> DeltaPhi entre W_hadrônico e W_leptônico
-    3  --> DeltaPhi entre Jatos e o MET
+    0  --> WW mass
+    1  --> Leptonic W pt
+    2  --> DeltaPhi between W_hadronic e W_leptonic
+    3  --> DeltaPhi between Jets e o MET
     4  --> jetAK8_pt
     5  --> jetAK8_eta
     6  --> jetAK8_prunedMass
@@ -108,8 +102,6 @@ def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invarian
     8  --> METPt
     9  --> muon_pt
     10 --> muon_eta
-    11 --> ExtraTracks
-
     '''
 
     pfeta = get_PfFrom(tree, 'pfeta')
@@ -131,13 +123,11 @@ def almir( tree ): # Funcao que retorna um DataFrame que contem a massa invarian
                     
     ExtraTracks = np.array( (pfCands_sel3_.T).count() )
 
-    #print('ExtraTracks --> \n', ExtraTracks,'\n')
-
     events_all = np.concatenate( ( W_mass.reshape(-1,1), W_lep_pt.reshape(-1,1), dphi_jet_lep.reshape(-1,1), 
     dphi_jet_MET.reshape(-1,1),jetAK8_pt.reshape(-1,1), jetAK8_eta.reshape(-1,1), jetAK8_prunedMass.reshape(-1,1), jetAK8_tau21.reshape(-1,1), 
-    METPt.reshape(-1,1), muon_pt.reshape(-1,1), muon_eta.reshape(-1,1), ExtraTracks.reshape(-1,1) ) , axis = 1 ) # concatenando todos as variáveis
+    METPt.reshape(-1,1), muon_pt.reshape(-1,1), muon_eta.reshape(-1,1), ExtraTracks.reshape(-1,1) ) , axis = 1 ) # concatenating all variables
 
-    events_all_cut = (events_all[:,4] >= 200) & (events_all[:,5] <= 2.4) & (events_all[:,8] >= 40)  & (events_all[:,9] >= 53)  & (events_all[:,10] <= 2.4)  # realizando os cortes nas variáveis
+    events_all_cut = (events_all[:,4] >= 200) & (events_all[:,5] <= 2.4) & (events_all[:,8] >= 40)  & (events_all[:,9] >= 53)  & (events_all[:,10] <= 2.4)  # making the cuts in the variables
     
     array_numpy = events_all[events_all_cut]
 
