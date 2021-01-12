@@ -1,0 +1,31 @@
+executable = sub_condor.csh
+
+output     = output/output_$(ProcId).out
+error      = output/output_$(ProcId).err
+log        = output/output_$(ProcId).log
+
+getenv     = True
+
+#environment = "X509_USER_PROXY=$ENV(HOME)/x509up_u61469"
+
+requirements = (OpSysAndVer =?= "CentOS7")
+
+#request_memory = 16000
+#request_memory = 32000
+request_memory = 48000
+
+#+JobFlavour = "longlunch"
+#+JobFlavour = "workday"
++JobFlavour = "tomorrow"
+
+should_transfer_files = IF_NEEDED
+when_to_transfer_output = ON_EXIT
+transfer_output_files = ""
+
+queue arguments from (
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonH.root Data_H
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonG.root Data_G
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonC.root Data_C
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonB.root Data_B
+)    
+
