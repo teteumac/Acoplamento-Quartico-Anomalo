@@ -44,6 +44,10 @@ def open_branches_proton( file , array_ ):
     merda2 = np.array( pd.DataFrame(root_[ array_ ].array())[1])
     return np.concatenate( (merda1.reshape(-1,1),merda2.reshape(-1,1)),axis=1 )
 
+def open_PUWeight( file ):
+    root_ = uproot4.open( file )['demo/Events']
+    return np.array( root_['PUWeight'].array() ).reshape(-1,1)
+
 # Funcao que faz todo o trabalho duro e forma uma matriz de dados contendo apenas as variáveis do sistema central
 
 def almir( file ): 
@@ -73,7 +77,7 @@ def almir( file ):
     muon_pz  = open_branches_muon(file,'muon_pz')[trigger]
     muon_E   = open_branches_muon(file,'muon_E')[trigger]   
     
-    PUWeight = open_branches_muon(file,'PUWeight')[trigger]
+    PUWeight = open_PUWeight(file,'PUWeight')[trigger]
     
     
     k = ( ( Mw**2 ) / 2 + muon_px * METPx ) +  (muon_py * METPy ) 
