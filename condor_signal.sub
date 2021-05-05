@@ -1,4 +1,4 @@
-executable = sub_condor.csh
+executable = sub_condor_signal.csh
 
 output     = output/output_$(ProcId).out
 error      = output/output_$(ProcId).err
@@ -11,12 +11,12 @@ getenv     = True
 requirements = (OpSysAndVer =?= "CentOS7")
 
 #request_memory = 16000
-#request_memory = 32000
-request_memory = 48000
+request_memory = 32000
+#request_memory = 48000
 
-#+JobFlavour = "longlunch"
++JobFlavour = "longlunch"
 #+JobFlavour = "workday"
-+JobFlavour = "tomorrow"
+#+JobFlavour = "tomorrow"
 
 should_transfer_files = IF_NEEDED
 when_to_transfer_output = ON_EXIT

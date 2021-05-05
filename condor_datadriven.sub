@@ -1,4 +1,4 @@
-executable = sub_condor_dados.csh
+executable = sub_condor_datadriven.csh
 
 output     = output/output_$(ProcId).out
 error      = output/output_$(ProcId).err
@@ -24,9 +24,9 @@ when_to_transfer_output = ON_EXIT
 transfer_output_files = ""
 
 queue arguments from (
-/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonG.root Data_G
-/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonC.root Data_C
-/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonB.root Data_B
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonG.root Data_driven_G
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonC.root Data_driven_C
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonB.root Data_driven_B
 #/eos/home-m/matheus/amostras_2016/merged_06_10_20/SingleMuonH.root Data_H
-)    
+)
 

@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import division, print_function
+
 import uproot4
 import uproot
 import numpy as np
@@ -38,7 +41,7 @@ def open_branches_muon( file , array_ ):
     merda = np.array( pd.DataFrame(root_[ array_ ].array())[0])
     return merda
 
-def open_branches_proton( file , array_ ):
+def open_files_protons( file , array_ ):
     root_ = uproot.open( file )['demo/Events']
     merda1 = np.array( pd.DataFrame(root_[ array_ ].array())[0])
     merda2 = np.array( pd.DataFrame(root_[ array_ ].array())[1])
@@ -48,37 +51,45 @@ def open_PUWeight( file ):
     root_ = uproot4.open( file )['demo/Events']
     return np.array( root_['PUWeight'].array() ).reshape(-1,1)
 
+
+def open_files_trigger( file , array_ ): # Funcao que ler e abre as trees das nTuplas
+    root =  uproot4.open(file)
+    tree = root['demo/Events']
+    lista1 = []
+    for events in tree.iterate( [array_]  , step_size = "500MB", library="pd" ):
+        lista1.append( events[ array_ ][:,3] )
+    return np.concatenate(lista1)
+
 # Funcao que faz todo o trabalho duro e forma uma matriz de dados contendo apenas as variáveis do sistema central
 
 def almir( file ): 
     
-    trigger = ( open_branches_PF( file , 'HLT_pass') ==  1 )[:,3]
+    trigger = open_branches_PF( file , 'HLT_pass')[:,3] 
     
     Mw = 80.379 # massa do boson W
     
-    jetAK8_pt = open_branches( file , 'jetAK8_pt')[trigger]
-    jetAK8_prunedMass = open_branches( file , 'jetAK8_prunedMass')[trigger]
-    jetAK8_tau21 = open_branches(file, 'jetAK8_tau21')[trigger]
-    jetAK8_px =  open_branches(file,'jetAK8_px')[trigger]
-    jetAK8_py =  open_branches(file,'jetAK8_py')[trigger]
-    jetAK8_pz =  open_branches(file,'jetAK8_pz')[trigger]
-    jetAK8_E =  open_branches(file,'jetAK8_E')[trigger]
+    jetAK8_pt = open_branches_muon( file , 'jetAK8_pt')
+    jetAK8_prunedMass = open_branches_muon( file , 'jetAK8_prunedMass')
+    jetAK8_tau21 = open_branches_muon(file, 'jetAK8_tau21')
+    jetAK8_px =  open_branches_muon(file,'jetAK8_px')
+    jetAK8_py =  open_branches_muon(file,'jetAK8_py')
+    jetAK8_pz =  open_branches_muon(file,'jetAK8_pz')
+    jetAK8_E =  open_branches_muon(file,'jetAK8_E')
     
-    METPt  = open_branches_PF(file, 'METPt' )[trigger]
-    METPx  = open_branches_PF(file, 'METPx' )[trigger]
-    METPy  = open_branches_PF(file, 'METPy' )[trigger]
-    METphi = open_branches_PF(file, 'METphi')[trigger]
+    METPt  = open_branches_PF(file, 'METPt' )
+    METPx  = open_branches_PF(file, 'METPx' )
+    METPy  = open_branches_PF(file, 'METPy' )
+    METphi = open_branches_PF(file, 'METphi')
 
-    muon_pt  = open_branches_muon(file, 'muon_pt')[trigger]
-    muon_eta = open_branches_muon(file, 'muon_eta')[trigger]
-    muon_phi = open_branches_muon(file, 'muon_phi')[trigger]
-    muon_px  = open_branches_muon(file,'muon_px')[trigger]
-    muon_py  = open_branches_muon(file,'muon_py')[trigger]
-    muon_pz  = open_branches_muon(file,'muon_pz')[trigger]
-    muon_E   = open_branches_muon(file,'muon_E')[trigger]   
+    muon_pt  = open_branches_muon(file, 'muon_pt')
+    muon_eta = open_branches_muon(file, 'muon_eta')
+    muon_phi = open_branches_muon(file, 'muon_phi')
+    muon_px  = open_branches_muon(file,'muon_px')
+    muon_py  = open_branches_muon(file,'muon_py')
+    muon_pz  = open_branches_muon(file,'muon_pz')
+    muon_E   = open_branches_muon(file,'muon_E')   
     
-    PUWeight = open_PUWeight(file,'PUWeight')[trigger]
-    
+    PUWeight = open_PUWeight(file)    
     
     k = ( ( Mw**2 ) / 2 + muon_px * METPx ) +  (muon_py * METPy ) 
     raiz_ = ( np.sqrt( ( (k * muon_pz)**2) / (muon_pt**4)  - ( (muon_E * METPt)**2 - k) / muon_pt**2) )    
@@ -102,7 +113,8 @@ def almir( file ):
     
     W_mass = ( TLV_lep + TLV_jet ).mass # Massa invariante do WW
     W_lep_pt = ( TLV_lep ).pt # Pt do par de lepton
-    
+    W_rapidity = ( TLV_lep ).rapidity    
+
     dphi_jet_lep = TLV_lep.phi - TLV_jet.phi
     dphi_jet_lep = np.where( dphi_jet_lep >=  scipy.constants.pi, dphi_jet_lep - 2*scipy.constants.pi, dphi_jet_lep)
     dphi_jet_lep = np.where( dphi_jet_lep < -scipy.constants.pi, dphi_jet_lep + 2*scipy.constants.pi, dphi_jet_lep) # delta phi entre o jato e o par de lepton
@@ -129,10 +141,9 @@ def almir( file ):
     12 --> PUWeight
     '''
 
-    pfeta = open_branches_PF( file, 'pfeta' )[trigger] 
-    pfphi = open_branches_PF( file, 'pfphi' )[trigger] 
-    pffromPV = open_branches_PF( file, 'pffromPV' )[trigger] 
-    
+    pfeta = open_branches_PF( file, 'pfeta' )
+    pfphi = open_branches_PF( file, 'pfphi' ) 
+    pffromPV = open_branches_PF( file, 'pffromPV' )    
     
     dR_muon = ( ( pfeta - muon_eta )**2 + ( pfphi - muon_phi )**2 )**0.5
     dR_jet =  ( ( pfeta - TLV_jet.eta )**2 + ( pfphi - TLV_jet.phi )**2 )**0.5
@@ -149,22 +160,19 @@ def almir( file ):
     
     ExtraTracks = np.array(ExtraTracks).reshape(-1,1)
     
-    events_all = np.concatenate( ( W_mass.reshape(-1,1), W_lep_pt.reshape(-1,1), dphi_jet_lep.reshape(-1,1), 
-    dphi_jet_MET.reshape(-1,1), jetAK8_pt.reshape(-1,1), abs(TLV_jet.eta.reshape(-1,1)), jetAK8_prunedMass.reshape(-1,1), jetAK8_tau21.reshape(-1,1), 
-    METPt.reshape(-1,1), muon_pt.reshape(-1,1), abs(muon_eta.reshape(-1,1)), ExtraTracks , PUWeight.reshape(-1,1) ) , axis = 1 ) # concatenando todos as variáveis
+    events_all = np.concatenate( ( W_mass.reshape(-1,1), W_lep_pt.reshape(-1,1), dphi_jet_lep.reshape(-1,1), dphi_jet_MET.reshape(-1,1), jetAK8_pt.reshape(-1,1), abs(TLV_jet.eta.reshape(-1,1)), jetAK8_prunedMass.reshape(-1,1), jetAK8_tau21.reshape(-1,1), METPt.reshape(-1,1), muon_pt.reshape(-1,1), abs(muon_eta.reshape(-1,1)), ExtraTracks , PUWeight.reshape(-1,1), W_rapidity.reshape(-1,1) ), axis = 1 ) # concatenando todos as variáveis
 
-    events_all_cut = (events_all[:,4] >= 200) & (events_all[:,5] <= 2.4) & (events_all[:,8] >= 40)  & (events_all[:,9] >= 53)  & (events_all[:,10] <= 2.4)  # realizando os cortes nas variáveis
+    events_all = events_all[trigger]
+
+    events_all_cut = (events_all[:,4] > 200) & (events_all[:,5] < 2.4) & (events_all[:,8] > 40)  & (events_all[:,9] > 53)  & (events_all[:,10] < 2.4)  # realizando os cortes nas variáveis
     
-    array_numpy = events_all[events_all_cut]  
-        
-    columns = ['Mww','Pt_W_lep','dPhi_Whad_Wlep','dPhi_jatos_MET','jetAK8_pt','jetAK8_eta','jetAK8_prunedMass','jetAK8_tau21','METPt','muon_pt','muon_eta','ExtraTracks', 'PUWeight']
-
-    DataFrame = pd.DataFrame( array_numpy , columns = columns )
-    
-    #print(DataFrame)
-
-    return array_numpy # ou retorna o DataFrame com as colunas 
-    #return array_numpy # ou retorna um matriz numpy aninhada para economizar memória
+    array_numpy = events_all[events_all_cut] 
+ 
+    print( 'DataFrame Sistema Central \n', pd.DataFrame(array_numpy) ) 
+   
+    mask = np.any( np.isnan( events_all ) , axis = 1 ) 
+    #return events_all[ ~mask ]  # ou retorna o DataFrame com as colunas 
+    return events_all # ou retorna um matriz numpy aninhada para economizar memória
 
 # Função que faz a randomização das variáveis dos prótons 
 # e anexa em forma de coluna na matriz de dados do background
@@ -190,8 +198,9 @@ def soma_data(file):
     print('\t ProtCand_arm aberto')
     ProtCand_ismultirp = open_files_protons(file,'ProtCand_ismultirp')
     print('\t ProtCand_ismultirp aberto')
-    m = np.concatenate( ( ProtCand_xi,ProtCand_ThX,ProtCand_ThY, ProtCand_rpid, ProtCand_arm, ProtCand_ismultirp) , axis = 1 )
+    m = np.concatenate( ( ProtCand_xi,ProtCand_ThX,ProtCand_ThY, ProtCand_rpid, ProtCand_arm, ProtCand_ismultirp ) , axis = 1 )
     return m
+
 
 
 

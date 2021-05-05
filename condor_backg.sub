@@ -1,4 +1,4 @@
-executable = sub_condor.csh
+executable = sub_condor_back.csh
 
 output     = output/output_$(ProcId).out
 error      = output/output_$(ProcId).err
@@ -15,8 +15,8 @@ requirements = (OpSysAndVer =?= "CentOS7")
 request_memory = 48000
 
 #+JobFlavour = "longlunch"
-#+JobFlavour = "workday"
-+JobFlavour = "tomorrow"
++JobFlavour = "workday"
+#+JobFlavour = "tomorrow"
 
 should_transfer_files = IF_NEEDED
 when_to_transfer_output = ON_EXIT
@@ -46,22 +46,22 @@ queue arguments from (
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-1000toInf_MuEnrichedPt5_1.root QCD_1000_inf_1
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-650ToInf_2.root DY_650_INF_2
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-650ToInf_1.root DY_650_INF_1
-/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-50To100.root DY_50_100 
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-400To650_3.root DY_400_650_3
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-400To650_2.root DY_400_650_2
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-400To650_1.root DY_400_650_1
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_4.root DY_250_400_4
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_3.root DY_250_400_3
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_2.root DY_250_400_2
-/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_1.root DY_250_400_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_1.root DY_250_400_1
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_4.root DY_100_250_4
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_3.root DY_100_250_3
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_2.root DY_100_250_2
-/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_1.root DY_100_250_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_1.root DY_100_250_1
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/TT.root ttbar
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_1.root WJets_100_250_1
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_2.root WJets_100_250_2
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_3.root WJets_100_250_3
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_4.root WJets_100_250_4
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-250To400_1.root WJets_250_400_1
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-250To400_2.root WJets_250_400_2
 /eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-250To400_3.root WJets_250_400_3

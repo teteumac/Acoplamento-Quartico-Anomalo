@@ -1,9 +1,10 @@
-
 from __future__ import division, print_function
 import h5py
 import argparse
 from macro_background import *
 import uproot
+import numpy as np
+import pandas as pd
 
 parser = argparse.ArgumentParser(description = 'Creates data table from ntuple')
 parser.add_argument('--files', help = 'File paths' )
@@ -29,22 +30,27 @@ era_B = soma_data( data_B )
 era_C = soma_data( data_C )
 era_G = soma_data( data_G )
 
-dados_protons_erasBCG = np.concatenate( ( era_B , era_C , era_B ) , axis = 0 )
+dados_protons_erasBCG = np.concatenate( ( era_B , era_C , era_G ) , axis = 0 )
+
 
 # Eliminando todas as linhas que tem NaN  
 mask = np.any( np.isnan( dados_protons_erasBCG ) , axis = 1 )
+print('mask',mask)
 dataset_PPS = dados_protons_erasBCG[ ~mask ]
-dataset_PPS.shape
+print('dataset_PPS::', dataset_PPS )
 
 
-columns = ['Mww','Pt_W_lep','dPhi_Whad_Wlep','dPhi_jatos_MET','jetAK8_pt','jetAK8_eta',
-    'jetAK8_prunedMass','jetAK8_tau21','METPt','muon_pt','muon_eta','ExtraTracks', 'PUWeight',
-    'xi1','xi2','anguloX1', 'anguloX2', 'anguloY1','anguloY2', 'rpid1','rpid2','arm1','arm2','ismultirp1','ismultirp2']
+lista = [ ]
+for _ in range(60):
+    lista.append( r_sample( dataset_SistemaCentral, dados_protons_erasBCG ) )
 
-dataset_PPS_SistemaCentral = r_sample(dataset_SistemaCentral,dataset_PPS) 
-    
+dataset_PPS_SistemaCentral = np.array( np.concatenate( lista, axis = 0 ) )
+#dataset_PPS_SistemaCentral = r_sample( dataset_SistemaCentral, dados_protons_erasBCG )
+print( pd.DataFrame( dataset_PPS_SistemaCentral ), '\n' )    
+
+print('shape dataset back', dataset_PPS_SistemaCentral.shape)
+
 with h5py.File( 'output-' + label_ + '.h5', 'w') as f:
    dset = f.create_dataset( 'dados', data = dataset_PPS_SistemaCentral )
-   dset_columns = f.create_dataset( 'columns', data = columns )
 
 
