@@ -1,0 +1,29 @@
+executable = sub_condor_qcd.sh
+
+output     = output_eff/output_qcd_$(ProcId).out
+error      = output_eff/output_qcd_$(ProcId).err
+log        = output_eff/output_qcd_$(ProcId).log
+
+getenv     = True
+
+#environment = "X509_USER_PROXY=$ENV(HOME)/x509up_u61469"
+
+requirements = (OpSysAndVer =?= "CentOS7")
+
+#request_memory = 16000
+#request_memory = 32000
+request_memory = 48000
+
+#+JobFlavour = "longlunch"
+#+JobFlavour = "workday"
+#+JobFlavour = "tomorrow"
++JobFlavour = "nextweek"
+#+JobFlavour = "testmatch"
+
+RequestCpus = 24
+
+should_transfer_files = IF_NEEDED
+when_to_transfer_output = ON_EXIT
+transfer_output_files = ""
+
+queue
