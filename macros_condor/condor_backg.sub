@@ -1,0 +1,80 @@
+executable = sub_condor_back.csh
+
+output     = output/output_$(ProcId).out
+error      = output/output_$(ProcId).err
+log        = output/output_$(ProcId).log
+
+getenv     = True
+
+#environment = "X509_USER_PROXY=$ENV(HOME)/x509up_u61469"
+
+requirements = (OpSysAndVer =?= "CentOS7")
+
+#request_memory = 16000
+#request_memory = 32000
+request_memory = 48000
+
+#+JobFlavour = "longlunch"
+#+JobFlavour = "workday"
+#+JobFlavour = "tomorrow"
++JobFlavour = "nextweek"
+
+should_transfer_files = IF_NEEDED
+when_to_transfer_output = ON_EXIT
+transfer_output_files = ""
+
+RequestCpus = 24
+
+queue arguments from (
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/ST_tW_top.root Single_Top
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/ST_tW_antitop.root Single_Antitop
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/ST_t-channel_top.root Single_Top_tChannel
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/ST_t-channel_antitop.root Single_Antitop_tChannel
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/ST_s-channel.root Single_Top_sChanel
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-800to1000_MuEnrichedPt5_3.root QCD_800_1000_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-800to1000_MuEnrichedPt5_2.root QCD_800_1000_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-800to1000_MuEnrichedPt5_1.root QCD_800_1000_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-600to800_MuEnrichedPt5_3.root QCD_600_800_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-600to800_MuEnrichedPt5_2.root QCD_600_800_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-600to800_MuEnrichedPt5_1.root QCD_600_800_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-470to600_MuEnrichedPt5_3.root QCD_470_600_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-470to600_MuEnrichedPt5_2.root QCD_470_600_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-470to600_MuEnrichedPt5_1.root QCD_470_600_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-300to470_MuEnrichedPt5_3.root QCD_300_470_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-300to470_MuEnrichedPt5_2.root QCD_300_470_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-300to470_MuEnrichedPt5_1.root QCD_300_470_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-170to300_MuEnrichedPt5_3.root QCD_170_300_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-170to300_MuEnrichedPt5_1.root QCD_170_300_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-1000toInf_MuEnrichedPt5_2.root QCD_1000_inf_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/QCD_Pt-1000toInf_MuEnrichedPt5_1.root QCD_1000_inf_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-650ToInf_2.root DY_650_INF_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-650ToInf_1.root DY_650_INF_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-400To650_3.root DY_400_650_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-400To650_2.root DY_400_650_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-400To650_1.root DY_400_650_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_4.root DY_250_400_4
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_3.root DY_250_400_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_2.root DY_250_400_2
+##/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-250To400_1.root DY_250_400_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_4.root DY_100_250_4
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_3.root DY_100_250_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_2.root DY_100_250_2
+##/eos/home-m/matheus/amostras_2016/merged_06_10_20/DYJetsToLL_Pt-100To250_1.root DY_100_250_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/TT.root ttbar
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_1.root WJets_100_250_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_2.root WJets_100_250_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_3.root WJets_100_250_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-100To250_4.root WJets_100_250_4
+/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-250To400_1.root WJets_250_400_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-250To400_2.root WJets_250_400_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-250To400_3.root WJets_250_400_3
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-400To600_1.root WJets_400_600_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-400To600_2.root WJets_400_600_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-600ToInf_1.root WJets_600_inf_1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WJetsToLNu_Pt-600ToInf_2.root WJets_600_inf_2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WWToLNuQQ_1.root WW1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WWToLNuQQ_2.root WW2
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/WZTo1L1Nu2Q.root WZ
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/ZZTo2L2Q_1.root ZZ1
+#/eos/home-m/matheus/amostras_2016/merged_06_10_20/ZZTo2L2Q_2.root ZZ2
+)
