@@ -1,0 +1,35 @@
+executable = shell_Bayesian_Optimization.csh
+
+output     = output_Bayesian_Optimization/output_$(ProcId).out
+error      = output_Bayesian_Optimization/output_$(ProcId).err
+log        = output_Bayesian_Optimization/output_$(ProcId).log
+
+getenv     = True
+
+#environment = "X509_USER_PROXY=$ENV(HOME)/x509up_u61469"
+
+requirements = (OpSysAndVer =?= "CentOS7")
+
+#request_memory = 16000
+#request_memory = 32000
+request_memory = 48000
+
+#+JobFlavour = "longlunch"
+#+JobFlavour = "workday"
++JobFlavour = "tomorrow"
+#+JobFlavour = "nextweek"
+
+should_transfer_files = IF_NEEDED
+when_to_transfer_output = ON_EXIT
+transfer_output_files = ""
+
+queue arguments from (
+DataSet_ANOMALO1_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo1
+DataSet_ANOMALO2_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo2
+DataSet_ANOMALO3_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo3
+DataSet_ANOMALO4_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo4
+DataSet_ANOMALO5_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo5
+DataSet_ANOMALO6_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo6
+DataSet_ANOMALO7_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo7
+DataSet_ANOMALO8_multiRP.h5 DataDriven_Background_multiRP.h5 DataSet_SM_multiRP.h5 DataSet_dados_multiRP.h5 DataDriven_Anomalo8
+)
